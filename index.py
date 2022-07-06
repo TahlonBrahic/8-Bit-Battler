@@ -21,3 +21,4 @@ while True:
             exit()
 
     screen.fill((100, 100, 100))
+    pygame.display.update()
