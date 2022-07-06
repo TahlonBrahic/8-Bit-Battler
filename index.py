@@ -19,3 +19,5 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+
+    screen.fill((100, 100, 100))
