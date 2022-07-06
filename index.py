@@ -13,12 +13,24 @@ pygame.font.Font('X:\Files\Programming\Projects\PyPals\\resources\\font\Pixeltyp
 game_active = False
 start_time = 0
 
+# Player
+playerImage = pygame.image.load('Projects\PyPals\\resources\icon\\toucan.png')
+playerX = 800
+playerY = 800
+
+def player():
+    screen.blit(playerImage, (playerX, playerY))
+
 # game loop
 while True:
+
+    screen.fill((100, 100, 100))
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
 
-    screen.fill((100, 100, 100))
+    
+    player()
     pygame.display.update()
