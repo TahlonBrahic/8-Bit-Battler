@@ -9,7 +9,7 @@ pygame.display.set_caption('PyPals')
 icon = pygame.image.load('Projects\PyPals\\resources\icon\\turtle.png')
 pygame.display.set_icon(icon)
 clock = pygame.time.Clock()
-# test_font = pygame.font.Font('X:\Files\Programming\Projects\PyPals\resources\font\Pixeltype.ttf', 50)
+pygame.font.Font('X:\Files\Programming\Projects\PyPals\\resources\\font\Pixeltype.ttf', 50)
 game_active = False
 start_time = 0
 
