@@ -16,7 +16,7 @@ start_time = 0
 # Player
 playerImage = pygame.image.load('Projects\PyPals\\resources\icon\\toucan.png')
 playerX = 800
-playerY = 800
+playerY = 200
 
 def player():
     screen.blit(playerImage, (playerX, playerY))
