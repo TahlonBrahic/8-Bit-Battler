@@ -14,12 +14,16 @@ game_active = False
 start_time = 0
 
 # player
-playerImage = pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\toucan.png')
+playerImage1 = pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\toucan.png')
 playerX = 800
 playerY = 200
+fireball_attack = pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\fireball\efecto_fuego_00011.png')
 
-def player(x,y):
-    screen.blit(playerImage, (x, y))
+def player1(x,y):
+    screen.blit(playerImage1, (x, y))
+
+def player2(x,y):
+    screen.blit(playerImage, (x,y))
 
 # game loop
 while True:
@@ -34,13 +38,23 @@ while True:
         # player movement
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                playerX -= 5
+                playerX -= 10
             if event.key == pygame.K_RIGHT:
-                playerX += 5
+                playerX += 10
+            if event.key == pygame.K_UP:
+                playerY -= 10
+            if event.key == pygame.K_DOWN:
+                playerY += 10
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                pass
+               pass
+        
+        # player attack
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_f:
+                screen.blit(fireball_attack, (100, 100))
+
 
     
-    player(playerX, playerY)
+    player1(playerX, playerY)
     pygame.display.update()
