@@ -6,15 +6,15 @@ import random
 pygame.init()
 screen = pygame.display.set_mode((1920, 1080))
 pygame.display.set_caption('PyPals')
-icon = pygame.image.load('Projects\PyPals\\resources\icon\\turtle.png')
+icon = pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\turtle.png')
 pygame.display.set_icon(icon)
 clock = pygame.time.Clock()
-pygame.font.Font('X:\Files\Programming\Projects\PyPals\\resources\\font\Pixeltype.ttf', 50)
+pygame.font.Font('X:\\Files\\Programming\\Projects\\PyPals\\resources\\font\\Pixeltype.ttf', 50)
 game_active = False
 start_time = 0
 
 # player
-playerImage = pygame.image.load('Projects\PyPals\\resources\icon\\toucan.png')
+playerImage = pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\toucan.png')
 playerX = 800
 playerY = 200
 
@@ -37,6 +37,9 @@ while True:
                 playerX -= 5
             if event.key == pygame.K_RIGHT:
                 playerX += 5
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                pass
 
     
     player(playerX, playerY)
