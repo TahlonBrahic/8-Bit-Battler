@@ -36,9 +36,17 @@ while True:
     screen.fill((100, 100, 100))
     
     for event in pygame.event.get():
+
+        # quit game
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+
+        # settings menu
+        if event.type == pygame.KEYDOWN:
+            if event.type == pygame.K_ESCAPE:
+                continue
+
 
         # player1 movement
         if event.type == pygame.KEYDOWN:
