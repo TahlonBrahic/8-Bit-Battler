@@ -10,7 +10,7 @@ icon = pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\
 pygame.display.set_icon(icon)
 clock = pygame.time.Clock()
 pygame.font.Font('X:\\Files\\Programming\\Projects\\PyPals\\resources\\font\\Pixeltype.ttf', 50)
-game_active = False
+game_active = True
 start_time = 0
 
 # player 1
@@ -30,8 +30,29 @@ def player1(x,y):
 def player2(x,y):
     screen.blit(playerImage2, (x,y))
 
+# pause menu
+def pause():
+    paused = True
+    
+    while paused:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_c:
+                    pause = False
+                
+                elif evnt.key == pygame.K_q:
+                    pygame.quit()
+                    exit()
+
+        screen.fill((0,0,255))
+
+
 # game loop
-while True:
+while game_active:
 
     screen.fill((100, 100, 100))
     
@@ -41,12 +62,6 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-
-        # settings menu
-        if event.type == pygame.KEYDOWN:
-            if event.type == pygame.K_ESCAPE:
-                continue
-
 
         # player1 movement
         if event.type == pygame.KEYDOWN:
