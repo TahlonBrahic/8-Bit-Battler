@@ -59,7 +59,8 @@ def pause_game():
                 elif event.key == pygame.K_q:
                     pygame.quit()
                     exit()
-
+        pygame.display.update()
+        clock.tick(60)
         
 
 
