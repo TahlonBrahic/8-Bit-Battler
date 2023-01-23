@@ -39,37 +39,47 @@ def draw_text(text, font, color, surface, x, y):
     surface.blit(textobj, textrect)
 
 # pause menu
-def pause():
+def pause_game():
+    
     paused = True
     
     while paused:
+        screen.fill((0,0,0))
+        draw_text('paused', font, (255,255,255), screen, 1000, 1000)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
             
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_c:
-                    pause = False
+                if event.key == pygame.K_ESCAPE:
+                    paused = False
                 
-                elif evnt.key == pygame.K_q:
+                elif event.key == pygame.K_q:
                     pygame.quit()
                     exit()
 
-        screen.fill((0,0,255))
+        
 
 
 # game loop
 while game_active:
 
-    screen.fill((100, 100, 100))
-    
+    screen.fill((255, 255, 255))
+    clock.tick(60)
+
     for event in pygame.event.get():
 
         # quit game
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+
+        # pause game
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                pause_game()
 
         # player1 movement
         if event.type == pygame.KEYDOWN:
