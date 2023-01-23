@@ -10,6 +10,7 @@ icon = pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\
 pygame.display.set_icon(icon)
 clock = pygame.time.Clock()
 pygame.font.Font('X:\\Files\\Programming\\Projects\\PyPals\\resources\\font\\Pixeltype.ttf', 50)
+font = pygame.font.Font('X:\\Files\\Programming\\Projects\\PyPals\\resources\\font\\Pixeltype.ttf', 50)
 game_active = True
 start_time = 0
 
@@ -29,6 +30,13 @@ def player1(x,y):
 
 def player2(x,y):
     screen.blit(playerImage2, (x,y))
+
+# draw text to screen
+def draw_text(text, font, color, surface, x, y):
+    textobj = font.render(text, 1, color)
+    textrect = textobj.get_rect()
+    textrect.topleft = (x,y)
+    surface.blit(textobj, textrect)
 
 # pause menu
 def pause():
