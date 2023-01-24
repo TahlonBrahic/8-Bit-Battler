@@ -25,22 +25,22 @@ class Player:
         self.image = image
         self.name = name
         self.attack = attack
+    
+    def set_image(self, image_to_set):
+        self.image = image_to_set
 
 # player 1
 playerImage1 = pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\toucan.png')
 player1X = 800
 player1Y = 200
 fireball_attack = pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\fireball\efecto_fuego_00011.png')
+def player1(x,y):
+    screen.blit(playerImage1, (x, y))
 
 # player 2
 playerImage2 = pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\turtle.png')
 player2X = 200
 player2Y = 200
-
-
-def player1(x,y):
-    screen.blit(playerImage1, (x, y))
-
 def player2(x,y):
     screen.blit(playerImage2, (x,y))
 
@@ -80,13 +80,14 @@ def start_menu():
     while start_of_game:
         # screen.fill(main_menu_image, (0, 0)) 
         screen.fill((0, 255, 255)) #cyan for start
-        draw_text('PyPals Ultra Deluxe Version 2017', font, (0,0,0), screen, 20, 20)
+        draw_text('PyPals Ultra Deluxe Version 2017', font, (0,0,0), screen, 700, 20)
+        draw_text('Press S to start!', font, (0,0,0), screen, 800, 800)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_c:
+                if event.key == pygame.K_s:
                     start_of_game = False
         pygame.display.update()
         
