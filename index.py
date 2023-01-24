@@ -20,6 +20,12 @@ start_of_game = True
 
 #need to create classes and methods for creating characters DRY
 
+class Player:
+    def __init__(self, image, name, attack):
+        self.image = image
+        self.name = name
+        self.attack = attack
+
 # player 1
 playerImage1 = pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\toucan.png')
 player1X = 800
