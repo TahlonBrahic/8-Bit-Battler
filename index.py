@@ -6,41 +6,64 @@ from pygame.locals import *
 
 # initialize pygame
 pygame.init()
-resolution = (1920, 1080)
+resolution = (800, 600)
 screen = pygame.display.set_mode(resolution)
+
 pygame.display.set_caption('PyPals')
 icon = pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\turtle.png')
 pygame.display.set_icon(icon)
-clock = pygame.time.Clock()
+
 pygame.font.Font('X:\\Files\\Programming\\Projects\\PyPals\\resources\\font\\Pixeltype.ttf', 50)
 font = pygame.font.Font('X:\\Files\\Programming\\Projects\\PyPals\\resources\\font\\Pixeltype.ttf', 50)
-game_active = True
+
+fps_clock = pygame.time.Clock()
+fps = 30
 start_time = pygame.time.get_ticks()
 start_of_game = True
 
 #need to create classes and methods for creating characters DRY
 
 class Player:
-    def __init__(self, image, name, attack):
+    def __init__(self, image, name, attack, x, y):
         self.image = image
         self.name = name
         self.attack = attack
+        self.x = x
+        self.y = y
     
     def set_image(self, image_to_set):
         self.image = image_to_set
 
+    def set_x(self, x_to_set):
+        self.x = x_to_set
+
+    def set_y(self, y_to_set):
+        self.y = y_to_set
+
+    def set_attack(self, attack_to_set):
+        self.attack = attack_to_set
+
+    def blit_player(self, x,y):
+        screen.blit(self.image, (x,y))
+
+
+# half the size of a player image
+def image_resizer(image_to_half):
+    original_width, original_height = image_to_half.get_size()
+    new_width, new_height = original_width // 4, original_height // 4
+    image_to_return = pygame.transform.scale(image_to_half, (new_width, new_height))
+    return image_to_return
+
 # player 1
-playerImage1 = pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\toucan.png')
-player1X = 800
-player1Y = 200
+playerImage1 = image_resizer(pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\toucan.png'))
+player1X = 200; player1Y = 200
 fireball_attack = pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\fireball\efecto_fuego_00011.png')
 def player1(x,y):
     screen.blit(playerImage1, (x, y))
 
 # player 2
-playerImage2 = pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\turtle.png')
-player2X = 200
-player2Y = 200
+playerImage2 = image_resizer(pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\turtle.png'))
+player2X = 600; player2Y = 200
 def player2(x,y):
     screen.blit(playerImage2, (x,y))
 
@@ -71,7 +94,6 @@ def pause_game():
                     pygame.quit()
                     exit()
         pygame.display.update()
-        clock.tick(60)
 
 # start menu
 def start_menu():
@@ -91,20 +113,15 @@ def start_menu():
                     start_of_game = False
         pygame.display.update()
         
-
-
-
-
 # game loop
-while game_active:
+while True:
 
     if start_of_game:
         start_menu()
 
     screen.fill((255, 255, 255))
-    clock.tick(60)
 
-    for event in pygame.event.get():
+    for event in pygame.event.get(): # event handling loop
 
         # quit game
         if event.type == pygame.QUIT:
@@ -155,3 +172,4 @@ while game_active:
     player1(player1X, player1Y)
     player2(player2X, player2Y)
     pygame.display.update()
+    fps_clock.tick(fps)
