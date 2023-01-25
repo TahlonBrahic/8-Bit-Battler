@@ -13,8 +13,9 @@ pygame.display.set_caption('PyPals')
 icon = pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\turtle.png')
 pygame.display.set_icon(icon)
 
-pygame.font.Font('X:\\Files\\Programming\\Projects\\PyPals\\resources\\font\\Pixeltype.ttf', 50)
+
 font = pygame.font.Font('X:\\Files\\Programming\\Projects\\PyPals\\resources\\font\\Pixeltype.ttf', 50)
+game_background = pygame.image.load('game_background.png')
 
 fps_clock = pygame.time.Clock()
 fps = 30
@@ -24,13 +25,24 @@ start_of_game = True
 #need to create classes and methods for creating characters DRY
 
 class Player:
-    def __init__(self, image, name, attack, x, y):
+    def __init__(self, image, attack, x, y):
         self.image = image
-        self.name = name
         self.attack = attack
         self.x = x
         self.y = y
     
+    def get_image(self):
+        return self.image
+    
+    def get_x(self):
+        return self.x
+
+    def get_y(self):
+        return self.y
+
+    def get_attack(self):
+        return self.attack
+
     def set_image(self, image_to_set):
         self.image = image_to_set
 
@@ -119,8 +131,6 @@ while True:
     if start_of_game:
         start_menu()
 
-    screen.fill((255, 255, 255))
-
     for event in pygame.event.get(): # event handling loop
 
         # quit game
@@ -160,7 +170,7 @@ while True:
                 player2X += 10
             if event.key == pygame.K_w:
                 player2Y -= 10
-            if event.key == pygame.K_d:
+            if event.key == pygame.K_s:
                 player2Y += 10
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
@@ -168,7 +178,7 @@ while True:
         
 
 
-    
+    screen.blit(game_background, (0,0))
     player1(player1X, player1Y)
     player2(player2X, player2Y)
     pygame.display.update()
