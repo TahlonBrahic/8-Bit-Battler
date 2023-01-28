@@ -25,11 +25,12 @@ start_of_game = True
 #need to create classes and methods for creating characters DRY
 
 class Player:
-    def __init__(self, image, attack, x, y):
+    def __init__(self, image, attack, x, y, alive=True):
         self.image = image
         self.attack = attack
         self.x = x
         self.y = y
+        self.alive = alive
     
     def get_image(self):
         return self.image
@@ -42,6 +43,9 @@ class Player:
 
     def get_attack(self):
         return self.attack
+        
+    def get_alive(self):
+        return self.alive
 
     def set_image(self, image_to_set):
         self.image = image_to_set
@@ -55,8 +59,11 @@ class Player:
     def set_attack(self, attack_to_set):
         self.attack = attack_to_set
 
-    def blit_player(self, x,y):
-        screen.blit(self.image, (x,y))
+    def set_alive(self, state):
+        self.alive = state
+
+    def blit_player(self):
+        return screen.blit(self.image, (self.x, self.y))
 
 
 # half the size of a player image
@@ -66,18 +73,18 @@ def image_resizer(image_to_half):
     image_to_return = pygame.transform.scale(image_to_half, (new_width, new_height))
     return image_to_return
 
-# player 1
-playerImage1 = image_resizer(pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\toucan.png'))
-player1X = 200; player1Y = 200
+# attack list
 fireball_attack = pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\fireball\efecto_fuego_00011.png')
-def player1(x,y):
-    screen.blit(playerImage1, (x, y))
 
-# player 2
-playerImage2 = image_resizer(pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\turtle.png'))
-player2X = 600; player2Y = 200
-def player2(x,y):
-    screen.blit(playerImage2, (x,y))
+# character image list
+toucan = image_resizer(pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\toucan.png'))
+turtle = image_resizer(pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\turtle.png'))
+
+# player's
+player1 = Player(toucan, fireball_attack, 200, 200)
+player2 = Player(turtle, fireball_attack, 600, 200)
+#def player2(x,y):
+#    screen.blit(playerImage2, (x,y))
 
 # draw text to screen
 def draw_text(text, font, color, surface, x, y):
@@ -85,6 +92,7 @@ def draw_text(text, font, color, surface, x, y):
     textrect = textobj.get_rect()
     textrect.topleft = (x,y)
     surface.blit(textobj, textrect)
+
 
 # pause menu
 def pause_game():   
@@ -142,44 +150,27 @@ while True:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 pause_game()
-
-        # player1 movement
-        if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                player1X -= 10
+                player1.x -= 10
             if event.key == pygame.K_RIGHT:
-                player1X += 10
+                player1.x += 10
             if event.key == pygame.K_UP:
-                player1Y -= 10
+                player1.y -= 10
             if event.key == pygame.K_DOWN:
-                player1Y += 10
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-               pass
-        
-        # player1 attack
-        if event.type == pygame.KEYDOWN:
+                player1.y += 10    
             if event.key == pygame.K_f:
                 screen.blit(fireball_attack, (100, 100))
-
-        # player2 movement
-        if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_a:
-                player2X -= 10
+                player2.x -= 10
             if event.key == pygame.K_d:
-                player2X += 10
+                player2.x += 10
             if event.key == pygame.K_w:
-                player2Y -= 10
+                player2.y -= 10
             if event.key == pygame.K_s:
-                player2Y += 10
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-               pass
-        
-
+                player2.y += 10
 
     screen.blit(game_background, (0,0))
-    player1(player1X, player1Y)
-    player2(player2X, player2Y)
+    player1.blit_player()
+    player2.blit_player()
     pygame.display.update()
     fps_clock.tick(fps)
