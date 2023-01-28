@@ -25,12 +25,14 @@ start_of_game = True
 #need to create classes and methods for creating characters DRY
 
 class Player:
-    def __init__(self, image, attack, x, y, alive=True):
+    def __init__(self, image, attack, x, y, alive=True, velocity=0):
         self.image = image
         self.attack = attack
         self.x = x
         self.y = y
         self.alive = alive
+        self.velocity = velocity
+        self.gravity = 20
     
     def get_image(self):
         return self.image
@@ -46,6 +48,12 @@ class Player:
         
     def get_alive(self):
         return self.alive
+    
+    def get_velocity(self):
+        return self.get_velocity
+
+    def get_gravity(self):
+        return self.gravity
 
     def set_image(self, image_to_set):
         self.image = image_to_set
@@ -65,6 +73,12 @@ class Player:
     def blit_player(self):
         return screen.blit(self.image, (self.x, self.y))
 
+    def player_surface(self):
+        self.get_rect()
+
+    def jump(self):
+        self.y += 50
+
 
 # half the size of a player image
 def image_resizer(image_to_half):
@@ -83,6 +97,7 @@ turtle = image_resizer(pygame.image.load('X:\Files\Programming\Projects\PyPals\\
 # player's
 player1 = Player(toucan, fireball_attack, 200, 200)
 player2 = Player(turtle, fireball_attack, 600, 200)
+player_list = [player1, player2]
 #def player2(x,y):
 #    screen.blit(playerImage2, (x,y))
 
@@ -141,12 +156,10 @@ while True:
 
     for event in pygame.event.get(): # event handling loop
 
-        # quit game
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
 
-        # pause game
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 pause_game()
@@ -155,7 +168,7 @@ while True:
             if event.key == pygame.K_RIGHT:
                 player1.x += 10
             if event.key == pygame.K_UP:
-                player1.y -= 10
+                player1.jump() 
             if event.key == pygame.K_DOWN:
                 player1.y += 10    
             if event.key == pygame.K_f:
@@ -165,9 +178,16 @@ while True:
             if event.key == pygame.K_d:
                 player2.x += 10
             if event.key == pygame.K_w:
-                player2.y -= 10
+                player2.jump()
             if event.key == pygame.K_s:
                 player2.y += 10
+
+        # gravity
+        for player in player_list:
+            if player.y < 290:
+                player.y += player.gravity
+            if player.y > 290:
+                player.y = 290
 
     screen.blit(game_background, (0,0))
     player1.blit_player()
