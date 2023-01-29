@@ -36,16 +36,21 @@ def load_image(name, colorkey=None):
         image.set_colorkey(colorkey, RLEACCEL)
     return image, image.get_rect()
 
-class Player:
-    def __init__(self, image, attack, x, y, alive=True, velocity=0):
-        self.image = image
+class Player(pygame.sprite.Sprite):
+    def __init__(self, image, attack, x, y, alive=True, velocity=0, health=100):
+        pygame.sprite.Sprite.__init__(self)
+        self.image, self.rect = load_image(image, -1)
         self.attack = attack
         self.x = x
         self.y = y
         self.alive = alive
         self.velocity = velocity
         self.gravity = 20
-    
+        self.health = health
+
+    def _attack(self):
+        pass
+
     def get_image(self):
         return self.image
     
@@ -82,6 +87,9 @@ class Player:
     def set_alive(self, state):
         self.alive = state
 
+    def set_health(self, health_to_set):
+        self.health = health_to_set
+
     def blit_player(self):
         return screen.blit(self.image, (self.x, self.y))
 
@@ -94,15 +102,6 @@ class Player:
     def player_attack(self):
         return screen.blit(self.attack, (self.x, self.y))
 
-# considering replacing with sprite
-class PlayerNew(pygame.sprite.Sprite):
-    def __init__(self, image, attack):
-        pygame.sprite.Sprite.__init__(self)
-        self.image, self.rect = load_image(image, -1)
-        self.attack = attack
-
-    def _attack(self):
-        pass
 
 
 
@@ -114,15 +113,16 @@ def image_resizer(image_to_half):
     return image_to_return
 
 # attack list
-fireball_attack = pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\fireball\efecto_fuego_00011.png').convert()
+fireball_attack_image = 'X:\Files\Programming\Projects\PyPals\\resources\icon\\fireball\efecto_fuego_00011.png'
 
 # character image list
-toucan = image_resizer(pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\toucan.png')).convert()
-turtle = image_resizer(pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\turtle.png')).convert()
+toucan_image = 'X:\Files\Programming\Projects\PyPals\\resources\icon\\toucan.png'
+turtle_image = 'X:\Files\Programming\Projects\PyPals\\resources\icon\\turtle.png'
+
 
 # player's
-player1 = Player(toucan, fireball_attack, 200, 200)
-player2 = Player(turtle, fireball_attack, 600, 200)
+player1 = Player(toucan_image, fireball_attack_image, 500, 290)
+player2 = Player(turtle_image, fireball_attack_image, 200, 290)
 player_list = [player1, player2]
 
 # draw text to screen
