@@ -1,7 +1,7 @@
 import pygame
 import pygame.surface
 import random
-import sys
+import os, sys
 from pygame.locals import *
 
 # initialize pygame
@@ -22,7 +22,19 @@ fps = 60
 start_time = pygame.time.get_ticks()
 start_of_game = True
 
-#need to create classes and methods for creating characters DRY
+def load_image(name, colorkey=None):
+    fullname = os.path.join('data', name)
+    try:
+        image = pygame.image.load(fullname)
+    except pygame.error:
+        print("Cannot load image:", name)
+        raise SystemExit
+    image = image.convert()
+    if colorkey is not None:
+        if colorkey is -1:
+            colorkey = image.get_at((0,0))
+        image.set_colorkey(colorkey, RLEACCEL)
+    return image, image.get_rect()
 
 class Player:
     def __init__(self, image, attack, x, y, alive=True, velocity=0):
@@ -81,6 +93,13 @@ class Player:
     
     def player_attack(self):
         return screen.blit(self.attack, (self.x, self.y))
+
+# considering replacing with sprite
+class PlayerNew(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprrite.Sprite.__init__(self, image)
+        self.image, self.rect = load_image(image)
+        self.x, self. y = (100,100)
 
 
 # half the size of a player image
