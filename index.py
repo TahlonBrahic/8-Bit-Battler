@@ -96,10 +96,14 @@ class Player:
 
 # considering replacing with sprite
 class PlayerNew(pygame.sprite.Sprite):
-    def __init__(self):
-        pygame.sprrite.Sprite.__init__(self, image)
-        self.image, self.rect = load_image(image)
-        self.x, self. y = (100,100)
+    def __init__(self, image, attack):
+        pygame.sprite.Sprite.__init__(self)
+        self.image, self.rect = load_image(image, -1)
+        self.attack = attack
+
+    def _attack(self):
+        pass
+
 
 
 # half the size of a player image
@@ -122,10 +126,11 @@ player2 = Player(turtle, fireball_attack, 600, 200)
 player_list = [player1, player2]
 
 # draw text to screen
-def draw_text(text, font, color, surface, x, y):
+def draw_text_centered(text, font, color, surface, y):
     textobj = font.render(text, 1, color)
     textrect = textobj.get_rect()
-    textrect.topleft = (x,y)
+    textrect.centerx = screen.get_rect().centerx 
+    textrect.y += y
     surface.blit(textobj, textrect)
 
 
@@ -134,7 +139,7 @@ def pause_game():
     paused = True  
     while paused:
         screen.fill((0,0,0))
-        draw_text('paused', font, (255,255,255), screen, 1000, 1000)
+        draw_text_centered('paused', font, (255,255,255), screen, 1000, 1000)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -157,8 +162,8 @@ def start_menu():
     while start_of_game:
         # screen.fill(main_menu_image, (0, 0)) 
         screen.fill((0, 255, 255)) #cyan for start
-        draw_text('PyPals Ultra Deluxe Version 2017', font, (0,0,0), screen, 700, 20)
-        draw_text('Press S to start!', font, (0,0,0), screen, 800, 800)
+        draw_text_centered('PyPals Ultra Deluxe Version 2017', font, (0,0,0), screen, 20)
+        draw_text_centered('Press S to start!', font, (0,0,0), screen, 140)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -188,7 +193,7 @@ while True:
             if event.key == pygame.K_RIGHT:
                 player1.x += 10
             if event.key == pygame.K_UP:
-                player1.jump() 
+                player1.player_jump() 
             if event.key == pygame.K_DOWN:
                 player1.y += 10    
             if event.key == pygame.K_f:
@@ -198,7 +203,7 @@ while True:
             if event.key == pygame.K_d:
                 player2.x += 10
             if event.key == pygame.K_w:
-                player2.jump()
+                player2.player_jump()
             if event.key == pygame.K_s:
                 player2.y += 10
 
