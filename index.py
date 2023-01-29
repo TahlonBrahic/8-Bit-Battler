@@ -18,7 +18,7 @@ font = pygame.font.Font('X:\\Files\\Programming\\Projects\\PyPals\\resources\\fo
 game_background = pygame.image.load('game_background.png')
 
 fps_clock = pygame.time.Clock()
-fps = 30
+fps = 60
 start_time = pygame.time.get_ticks()
 start_of_game = True
 
@@ -76,8 +76,11 @@ class Player:
     def player_surface(self):
         self.get_rect()
 
-    def jump(self):
+    def player_jump(self):
         self.y += 50
+    
+    def player_attack(self):
+        return screen.blit(self.attack, (self.x, self.y))
 
 
 # half the size of a player image
@@ -88,18 +91,16 @@ def image_resizer(image_to_half):
     return image_to_return
 
 # attack list
-fireball_attack = pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\fireball\efecto_fuego_00011.png')
+fireball_attack = pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\fireball\efecto_fuego_00011.png').convert()
 
 # character image list
-toucan = image_resizer(pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\toucan.png'))
-turtle = image_resizer(pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\turtle.png'))
+toucan = image_resizer(pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\toucan.png')).convert()
+turtle = image_resizer(pygame.image.load('X:\Files\Programming\Projects\PyPals\\resources\icon\\turtle.png')).convert()
 
 # player's
 player1 = Player(toucan, fireball_attack, 200, 200)
 player2 = Player(turtle, fireball_attack, 600, 200)
 player_list = [player1, player2]
-#def player2(x,y):
-#    screen.blit(playerImage2, (x,y))
 
 # draw text to screen
 def draw_text(text, font, color, surface, x, y):
@@ -172,7 +173,7 @@ while True:
             if event.key == pygame.K_DOWN:
                 player1.y += 10    
             if event.key == pygame.K_f:
-                screen.blit(fireball_attack, (100, 100))
+                player1.player_attack()
             if event.key == pygame.K_a:
                 player2.x -= 10
             if event.key == pygame.K_d:
