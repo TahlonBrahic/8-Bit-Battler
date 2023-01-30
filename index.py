@@ -29,7 +29,7 @@ def load_image(name, colorkey=None):
     except pygame.error:
         print("Cannot load image:", name)
         raise SystemExit
-    image = image.convert()
+    image = image.convert_alpha()
     if colorkey is not None:
         if colorkey is -1:
             colorkey = image.get_at((0,0))
@@ -37,7 +37,7 @@ def load_image(name, colorkey=None):
     return image, image.get_rect()
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, image, attack, x, y, alive=True, velocity=0, health=100):
+    def __init__(self, image, attack, x, y, alive=True, velocity=10, health=100):
         pygame.sprite.Sprite.__init__(self)
         self.image, self.rect = load_image(image, -1)
         self.attack = attack
@@ -90,14 +90,23 @@ class Player(pygame.sprite.Sprite):
     def set_health(self, health_to_set):
         self.health = health_to_set
 
-    def blit_player(self):
-        return screen.blit(self.image, (self.x, self.y))
+    def draw(self):
+        return screen.blit(image_resizer(self.image), (self.x, self.y))
 
     def player_surface(self):
-        self.get_rect()
+        pass
 
     def player_jump(self):
-        self.y += 50
+        jumping = False
+        if jumping is False:
+            jumping = True
+        if jumping:
+            self.y -= self.velocity
+            self.velocity -= 1
+            if self.velocity < -10:
+                jumping = False
+                self.velocity = 10
+
     
     def player_attack(self):
         return screen.blit(self.attack, (self.x, self.y))
@@ -123,6 +132,7 @@ turtle_image = 'X:\Files\Programming\Projects\PyPals\\resources\icon\\turtle.png
 # player's
 player1 = Player(toucan_image, fireball_attack_image, 500, 290)
 player2 = Player(turtle_image, fireball_attack_image, 200, 290)
+player2.rect.height -= 40
 player_list = [player1, player2]
 
 # draw text to screen
@@ -180,11 +190,9 @@ while True:
         start_menu()
 
     for event in pygame.event.get(): # event handling loop
-
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 pause_game()
@@ -198,24 +206,22 @@ while True:
                 player1.y += 10    
             if event.key == pygame.K_f:
                 player1.player_attack()
+            if event.key == pygame.K_SPACE:
+                player1.player_jump()
             if event.key == pygame.K_a:
                 player2.x -= 10
             if event.key == pygame.K_d:
                 player2.x += 10
             if event.key == pygame.K_w:
-                player2.player_jump()
+                player2.y -= 10
             if event.key == pygame.K_s:
                 player2.y += 10
+            if event.key == pygame.K_RCTRL:
+                player2.player_jump()
 
-        # gravity
-        for player in player_list:
-            if player.y < 290:
-                player.y += player.gravity
-            if player.y > 290:
-                player.y = 290
-
+    fps_clock.tick(fps)
     screen.blit(game_background, (0,0))
-    player1.blit_player()
-    player2.blit_player()
+    player1.draw()
+    player2.draw()
     pygame.display.update()
     fps_clock.tick(fps)
