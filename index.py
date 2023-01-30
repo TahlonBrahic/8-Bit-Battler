@@ -185,7 +185,6 @@ def start_menu():
         
 # game loop
 while True:
-
     if start_of_game:
         start_menu()
 
@@ -195,31 +194,22 @@ while True:
             exit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
-                pause_game()
-            if event.key == pygame.K_LEFT:
-                player1.x -= 10
-            if event.key == pygame.K_RIGHT:
-                player1.x += 10
-            if event.key == pygame.K_UP:
-                player1.player_jump() 
-            if event.key == pygame.K_DOWN:
-                player1.y += 10    
-            if event.key == pygame.K_f:
-                player1.player_attack()
-            if event.key == pygame.K_SPACE:
-                player1.player_jump()
-            if event.key == pygame.K_a:
-                player2.x -= 10
-            if event.key == pygame.K_d:
-                player2.x += 10
-            if event.key == pygame.K_w:
-                player2.y -= 10
-            if event.key == pygame.K_s:
-                player2.y += 10
-            if event.key == pygame.K_RCTRL:
-                player2.player_jump()
+                pause_game() 
 
-    fps_clock.tick(fps)
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]: player1.x -= 10
+    if keys[pygame.K_RIGHT]: player1.x += 10   
+    if keys[pygame.K_UP]: player1.y -= 10    
+    if keys[pygame.K_DOWN]: player1.y += 10    
+    if keys[pygame.K_f]: player1.player_attack()   
+    if keys[pygame.K_SPACE]: player1.player_jump() 
+    if keys[pygame.K_a]: player2.x -= 10
+    if keys[pygame.K_d]: player2.x += 10
+    if keys[pygame.K_w]: player2.y -= 10
+    if keys[pygame.K_s]: player2.y += 10
+    if keys[pygame.K_0]: player2.player_attack()
+    if keys[pygame.K_RCTRL]: player2.player_jump()         
+
     screen.blit(game_background, (0,0))
     player1.draw()
     player2.draw()
