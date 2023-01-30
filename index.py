@@ -149,7 +149,7 @@ def pause_game():
     paused = True  
     while paused:
         screen.fill((0,0,0))
-        draw_text_centered('paused', font, (255,255,255), screen, 1000, 1000)
+        draw_text_centered('paused', font, (255,255,255), screen, 200)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
