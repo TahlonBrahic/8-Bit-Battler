@@ -15,7 +15,8 @@ pygame.display.set_icon(icon)
 
 
 font = pygame.font.Font('X:\\Files\\Programming\\Projects\\PyPals\\resources\\font\\Pixeltype.ttf', 50)
-game_background = pygame.image.load('game_background.png')
+game_background = pygame.image.load('background.png')
+game_background = pygame.transform.scale(game_background, (800, 600))
 
 clock = pygame.time.Clock()
 fps = 60
