@@ -17,7 +17,7 @@ pygame.display.set_icon(icon)
 font = pygame.font.Font('X:\\Files\\Programming\\Projects\\PyPals\\resources\\font\\Pixeltype.ttf', 50)
 game_background = pygame.image.load('game_background.png')
 
-fps_clock = pygame.time.Clock()
+clock = pygame.time.Clock()
 fps = 60
 start_time = pygame.time.get_ticks()
 start_of_game = True
@@ -37,7 +37,7 @@ def load_image(name, colorkey=None):
     return image, image.get_rect()
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, image, attack, x, y, alive=True, velocity=10, health=100):
+    def __init__(self, image, attack, x, y, alive=True, velocity=10, health=100, jumping=False, gravity=-1):
         pygame.sprite.Sprite.__init__(self)
         self.image, self.rect = load_image(image, -1)
         self.attack = attack
@@ -45,8 +45,9 @@ class Player(pygame.sprite.Sprite):
         self.y = y
         self.alive = alive
         self.velocity = velocity
-        self.gravity = 20
+        self.gravity = gravity
         self.health = health
+        self.jumping = jumping
 
     def _attack(self):
         pass
@@ -93,22 +94,13 @@ class Player(pygame.sprite.Sprite):
     def draw(self):
         return screen.blit(image_resizer(self.image), (self.x, self.y))
 
-    def player_surface(self):
-        pass
+    def surface(self):
+        return 
 
-    def player_jump(self):
-        jumping = False
-        if jumping is False:
-            jumping = True
-        if jumping:
-            self.y -= self.velocity
-            self.velocity -= 1
-            if self.velocity < -10:
-                jumping = False
-                self.velocity = 10
-
+    def jump(self):
+        self.y -= 60
     
-    def player_attack(self):
+    def attack(self):
         return screen.blit(self.attack, (self.x, self.y))
 
 
@@ -132,7 +124,7 @@ turtle_image = 'X:\Files\Programming\Projects\PyPals\\resources\icon\\turtle.png
 # player's
 player1 = Player(toucan_image, fireball_attack_image, 500, 290)
 player2 = Player(turtle_image, fireball_attack_image, 200, 290)
-player2.rect.height -= 40
+player2.rect.bottom -= 20
 player_list = [player1, player2]
 
 # draw text to screen
@@ -195,23 +187,35 @@ while True:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 pause_game() 
+            if event.key == pygame.K_SPACE:
+                player1.jump()
+            if event.key == pygame.K_RCTRL:
+                player2.jump()
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]: player1.x -= 10
     if keys[pygame.K_RIGHT]: player1.x += 10   
     if keys[pygame.K_UP]: player1.y -= 10    
     if keys[pygame.K_DOWN]: player1.y += 10    
-    if keys[pygame.K_f]: player1.player_attack()   
-    if keys[pygame.K_SPACE]: player1.player_jump() 
+    if keys[pygame.K_f]: player1.attack()   
     if keys[pygame.K_a]: player2.x -= 10
     if keys[pygame.K_d]: player2.x += 10
     if keys[pygame.K_w]: player2.y -= 10
     if keys[pygame.K_s]: player2.y += 10
-    if keys[pygame.K_0]: player2.player_attack()
-    if keys[pygame.K_RCTRL]: player2.player_jump()         
+    if keys[pygame.K_0]: player2.attack()
+    print(player1.y)
 
+    for player in player_list:
+        if player.y < 290:
+            player.y += player.gravity
+            player.gravity += 1
+            if player.gravity < 10:
+                player.gravity += 1
+            player.gravity = 1
+        if player.y >= 290:
+            player.y == 290
     screen.blit(game_background, (0,0))
     player1.draw()
     player2.draw()
     pygame.display.update()
-    fps_clock.tick(fps)
+    clock.tick(fps)
