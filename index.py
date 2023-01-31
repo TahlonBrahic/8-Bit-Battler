@@ -108,23 +108,22 @@ class Player(pygame.sprite.Sprite):
 
 
 # half the size of a player image
-def image_resizer(image_to_half):
-    original_width, original_height = image_to_half.get_size()
-    new_width, new_height = original_width // 4, original_height // 4
-    image_to_return = pygame.transform.scale(image_to_half, (new_width, new_height))
-    return image_to_return
+def image_resizer(image):
+    return pygame.transform.scale(image, (200, 150))
+    
 
 # attack list
 fireball_attack_image = 'X:\Files\Programming\Projects\PyPals\\resources\icon\\fireball\efecto_fuego_00011.png'
 
 # character image list
-toucan_image = 'X:\Files\Programming\Projects\PyPals\\resources\icon\\toucan.png'
-turtle_image = 'X:\Files\Programming\Projects\PyPals\\resources\icon\\turtle.png'
+player1_image = 'X:\Files\Programming\Projects\PyPals\\resources\\test artwork\player1.png'
+player2_image= 'X:\Files\Programming\Projects\PyPals\\resources\\test artwork\player1.png'
+
 
 
 # player's
-player1 = Player(toucan_image, fireball_attack_image, 500, 290)
-player2 = Player(turtle_image, fireball_attack_image, 200, 290)
+player1 = Player(player1_image, fireball_attack_image, 500, 290)
+player2 = Player(player2_image, fireball_attack_image, 200, 290)
 player2.rect.bottom -= 20
 player_list = [player1, player2]
 
