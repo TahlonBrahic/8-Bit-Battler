@@ -116,14 +116,14 @@ def image_resizer(image):
 fireball_attack_image = 'X:\Files\Programming\Projects\PyPals\\resources\icon\\fireball\efecto_fuego_00011.png'
 
 # character image list
-player1_image = 'X:\Files\Programming\Projects\PyPals\\resources\\test artwork\player1.png'
-player2_image= 'X:\Files\Programming\Projects\PyPals\\resources\\test artwork\player1.png'
+player2_image = 'X:\Files\Programming\Projects\PyPals\\resources\\test artwork\player1.png'
+player1_image= 'X:\Files\Programming\Projects\PyPals\\resources\\test artwork\player2.png'
 
 
 
 # player's
-player1 = Player(player1_image, fireball_attack_image, 500, 290)
-player2 = Player(player2_image, fireball_attack_image, 200, 290)
+player1 = Player(player1_image, fireball_attack_image, 500, 380)
+player2 = Player(player2_image, fireball_attack_image, 200, 380)
 player2.rect.bottom -= 20
 player_list = [player1, player2]
 
@@ -195,25 +195,24 @@ while True:
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]: player1.x -= 10
     if keys[pygame.K_RIGHT]: player1.x += 10   
-    if keys[pygame.K_UP]: player1.y -= 10    
-    if keys[pygame.K_DOWN]: player1.y += 10    
+    #if keys[pygame.K_UP]: player1.y -= 10    
+    #if keys[pygame.K_DOWN]: player1.y += 10    
     if keys[pygame.K_f]: player1.attack()   
     if keys[pygame.K_a]: player2.x -= 10
     if keys[pygame.K_d]: player2.x += 10
-    if keys[pygame.K_w]: player2.y -= 10
-    if keys[pygame.K_s]: player2.y += 10
+    #if keys[pygame.K_w]: player2.y -= 10
+    #if keys[pygame.K_s]: player2.y += 10
     if keys[pygame.K_0]: player2.attack()
-    print(player1.y)
 
     for player in player_list:
-        if player.y < 290:
+        if player.y < 380:
             player.y += player.gravity
             player.gravity += 1
             if player.gravity < 10:
                 player.gravity += 1
             player.gravity = 1
         if player.y >= 290:
-            player.y == 290
+            player.y == 380
     screen.blit(game_background, (0,0))
     player1.draw()
     player2.draw()
