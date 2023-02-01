@@ -41,7 +41,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, image, attack, x, y, alive=True, velocity=10, health=100, jumping=False, gravity=-1):
         pygame.sprite.Sprite.__init__(self)
         self.image, self.rect = load_image(image, -1)
-        self.attack = attack
+        self.attack, self.attack_image = load_image(attack_image, -1)
         self.x = x
         self.y = y
         self.alive = alive
@@ -101,11 +101,10 @@ class Player(pygame.sprite.Sprite):
     def jump(self):
         player.jumping = True
         if player.jumping:
-           self.y -= 100
-
-    
+           self.y -= 200
+   
     def attack(self):
-        return screen.blit(self.attack, (self.x, self.y))
+        screen.blit(image_resizer(self.attack), (self.x, self.y))
 
 
 
@@ -116,7 +115,7 @@ def image_resizer(image):
     
 
 # attack list
-fireball_attack_image = 'X:\Files\Programming\Projects\PyPals\\resources\icon\\fireball\efecto_fuego_00011.png'
+attack_image = 'X:\Files\Programming\Projects\PyPals\\resources\\test artwork\\attack.png'
 
 # character image list
 player2_image = 'X:\Files\Programming\Projects\PyPals\\resources\\test artwork\player1.png'
@@ -125,9 +124,9 @@ player1_image= 'X:\Files\Programming\Projects\PyPals\\resources\\test artwork\pl
 
 
 # player's
-player1 = Player(player1_image, fireball_attack_image, 500, 380)
-player2 = Player(player2_image, fireball_attack_image, 200, 380)
-player2.rect.bottom -= 20
+player1 = Player(player1_image, attack_image, 500, 380)
+player2 = Player(player2_image, attack_image, 200, 380)
+
 player_list = [player1, player2]
 
 # draw text to screen
