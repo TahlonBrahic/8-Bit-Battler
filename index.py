@@ -99,7 +99,10 @@ class Player(pygame.sprite.Sprite):
         return 
 
     def jump(self):
-        self.y -= 60
+        player.jumping = True
+        if player.jumping:
+           self.y -= 100
+
     
     def attack(self):
         return screen.blit(self.attack, (self.x, self.y))
@@ -188,7 +191,8 @@ while True:
             if event.key == pygame.K_ESCAPE:
                 pause_game() 
             if event.key == pygame.K_SPACE:
-                player1.jump()
+                if player1.jumping == False:
+                    player1.jump()
             if event.key == pygame.K_RCTRL:
                 player2.jump()
 
@@ -206,17 +210,15 @@ while True:
         if player.y < 380:
             player.y += player.gravity
             player.gravity += 1
-            if player.gravity < 10:
-                player.gravity += 1
+        if player.y >= 380:
+            player.y = 380
             player.gravity = 1
-        if player.y >= 290:
-            player.y == 380
         if player.x > 640:
             player.x = 640
         if player.x < 0:
             player.x = 0
 
-    print(player1.x)
+
     screen.blit(game_background, (0,0))
     player1.draw()
     player2.draw()
