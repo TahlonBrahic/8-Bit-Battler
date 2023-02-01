@@ -194,16 +194,14 @@ while True:
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]: player1.x -= 10
-    if keys[pygame.K_RIGHT]: player1.x += 10   
-    #if keys[pygame.K_UP]: player1.y -= 10    
-    #if keys[pygame.K_DOWN]: player1.y += 10    
+    if keys[pygame.K_RIGHT]: player1.x += 10      
     if keys[pygame.K_f]: player1.attack()   
     if keys[pygame.K_a]: player2.x -= 10
     if keys[pygame.K_d]: player2.x += 10
-    #if keys[pygame.K_w]: player2.y -= 10
-    #if keys[pygame.K_s]: player2.y += 10
     if keys[pygame.K_0]: player2.attack()
 
+
+    # bounding
     for player in player_list:
         if player.y < 380:
             player.y += player.gravity
@@ -213,6 +211,12 @@ while True:
             player.gravity = 1
         if player.y >= 290:
             player.y == 380
+        if player.x > 640:
+            player.x = 640
+        if player.x < 0:
+            player.x = 0
+
+    print(player1.x)
     screen.blit(game_background, (0,0))
     player1.draw()
     player2.draw()
