@@ -41,7 +41,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, image, attack, x, y, alive=True, velocity=10, health=100, jumping=False, gravity=-1):
         pygame.sprite.Sprite.__init__(self)
         self.image, self.rect = load_image(image, -1)
-        self.attack, self.attack_image = load_image(attack_image, -1)
+        self.attack, self.attack_rect = load_image(attack_image, -1)
         self.x = x
         self.y = y
         self.alive = alive
@@ -49,9 +49,6 @@ class Player(pygame.sprite.Sprite):
         self.gravity = gravity
         self.health = health
         self.jumping = jumping
-
-    def _attack(self):
-        pass
 
     def get_image(self):
         return self.image
@@ -96,15 +93,16 @@ class Player(pygame.sprite.Sprite):
         return screen.blit(image_resizer(self.image), (self.x, self.y))
 
     def surface(self):
-        return self.rect
+        return self.rect()
 
     def jump(self):
         player.jumping = True
         if player.jumping:
            self.y -= 200
-           player.jumping = False
+           if player.y == 640:
+                player.jumping = False
    
-    def attack(self):
+    def draw_attack(self):
         screen.blit(image_resizer(self.attack), (self.x, self.y))
 
 
@@ -129,7 +127,7 @@ player2 = Player(player2_image, attack_image, 200, 380)
 player_list = [player1, player2]
 
 # draw text to screen
-def draw_text_centered(text, font, color, surface, y):
+def draw_text_centered(text, y, font=font, color=(0,0,0), surface=screen):
     textobj = font.render(text, 1, color)
     textrect = textobj.get_rect()
     textrect.centerx = screen.get_rect().centerx 
@@ -142,7 +140,7 @@ def pause_game():
     paused = True  
     while paused:
         screen.fill((0,0,0))
-        draw_text_centered('paused', font, (255,255,255), screen, 200)
+        draw_text_centered('paused', (255,255,255), 200)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -165,8 +163,8 @@ def start_menu():
     while start_of_game:
         # screen.fill(main_menu_image, (0, 0)) 
         screen.fill((0, 255, 255)) #cyan for start
-        draw_text_centered('PyPals Ultra Deluxe Version 2017', font, (0,0,0), screen, 20)
-        draw_text_centered('Press S to start!', font, (0,0,0), screen, 140)
+        draw_text_centered('PyPals Ultra Deluxe Version 2017', 20)
+        draw_text_centered('Press S to start!', 140)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -175,7 +173,7 @@ def start_menu():
                 if event.key == pygame.K_s:
                     start_of_game = False
         pygame.display.update()
-        
+
 # game loop
 while True:
     if start_of_game:
@@ -189,18 +187,19 @@ while True:
             if event.key == pygame.K_ESCAPE:
                 pause_game() 
             if event.key == pygame.K_SPACE:
-                if player1.jumping == False:
+                if not player1.jumping:
                     player1.jump()
             if event.key == pygame.K_RCTRL:
-                player2.jump()
+                if not player2.jumping:
+                    player2.jump()
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]: player1.x -= 10
     if keys[pygame.K_RIGHT]: player1.x += 10      
-    if keys[pygame.K_f]: player1.attack()   
+    if keys[pygame.K_f]: player1.draw_attack()   
     if keys[pygame.K_a]: player2.x -= 10
     if keys[pygame.K_d]: player2.x += 10
-    if keys[pygame.K_0]: player2.attack()
+    if keys[pygame.K_0]: player2.draw_attack()
 
 
     # bounding
@@ -213,11 +212,11 @@ while True:
             player.gravity = 1
         if player.x > 640:
             player.x = 640
-        if player.x < 0:
-            player.x = 0
-
+        if player.x < -10:
+            player.x = -10
 
     screen.blit(game_background, (0,0))
+    draw_text_centered('Fight!', 20)
     player1.draw()
     player2.draw()
     pygame.display.update()
