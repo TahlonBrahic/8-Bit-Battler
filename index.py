@@ -96,17 +96,16 @@ class Player(pygame.sprite.Sprite):
         return screen.blit(image_resizer(self.image), (self.x, self.y))
 
     def surface(self):
-        return 
+        return self.rect
 
     def jump(self):
         player.jumping = True
         if player.jumping:
            self.y -= 200
+           player.jumping = False
    
     def attack(self):
         screen.blit(image_resizer(self.attack), (self.x, self.y))
-
-
 
 
 # half the size of a player image
