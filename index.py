@@ -41,7 +41,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, image, attack, x, y, alive=True, velocity=10, health=100, jumping=False, gravity=-1):
         pygame.sprite.Sprite.__init__(self)
         self.image, self.rect = load_image(image, -1)
-        self.attack, self.attack_rect = load_image(attack_image, -1)
+        self.attack_image, self.attack_rect = load_image(attack_image, -1)
         self.x = x
         self.y = y
         self.alive = alive
@@ -102,8 +102,8 @@ class Player(pygame.sprite.Sprite):
            if player.y == 640:
                 player.jumping = False
    
-    def draw_attack(self):
-        screen.blit(image_resizer(self.attack), (self.x, self.y))
+    def attack(self):
+        screen.blit(image_resizer(self.attack_image), (self.x, self.y))
 
 
 # half the size of a player image
@@ -140,7 +140,7 @@ def pause_game():
     paused = True  
     while paused:
         screen.fill((0,0,0))
-        draw_text_centered('paused', (255,255,255), 200)
+        draw_text_centered('paused', 200, color=(255,255,255))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -196,10 +196,10 @@ while True:
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]: player1.x -= 10
     if keys[pygame.K_RIGHT]: player1.x += 10      
-    if keys[pygame.K_f]: player1.draw_attack()   
+    if keys[pygame.K_f]: player1.attack()   
     if keys[pygame.K_a]: player2.x -= 10
     if keys[pygame.K_d]: player2.x += 10
-    if keys[pygame.K_0]: player2.draw_attack()
+    if keys[pygame.K_0]: player2.attack()
 
 
     # bounding
