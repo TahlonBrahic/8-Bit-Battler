@@ -38,7 +38,7 @@ def load_image(name, colorkey=None):
     return image, image.get_rect()
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, image, attack, x, y, alive=True, velocity=10, health=100, jumping=False, gravity=-1):
+    def __init__(self, image, attack, x, y, alive=True, velocity=10, health=100, jumping=False, attacking=False, gravity=-1):
         pygame.sprite.Sprite.__init__(self)
         self.image, self.rect = load_image(image, -1)
         self.attack_image, self.attack_rect = load_image(attack_image, -1)
@@ -49,6 +49,7 @@ class Player(pygame.sprite.Sprite):
         self.gravity = gravity
         self.health = health
         self.jumping = jumping
+        self.attacking = attacking
 
     def get_image(self):
         return self.image
@@ -95,15 +96,28 @@ class Player(pygame.sprite.Sprite):
     def surface(self):
         return self.rect()
 
-    def jump(self):
-        player.jumping = True
-        if player.jumping:
-           self.y -= 200
-           if player.y == 640:
+    def jump(self): #fixing this, crashes game
+        if not player.jumping:
+            player.jumping = True
+        while player.jumping:
+            if player.y < 380:
+                player.y += player.gravity
+                player.gravity += 1
+            if player.y >= 380:
+                player.y = 380
+                player.gravity = 1
+            if player.y == 640:
                 player.jumping = False
+        pygame.display.update()
    
     def attack(self):
-        screen.blit(image_resizer(self.attack_image), (self.x, self.y))
+        attackX, attackY = self.x +50, self.y 
+        if not player.attacking:
+            player.attacking = True
+        while player.attacking and attackX > 0 and attackX < 600:
+            screen.blit(image_resizer(self.attack_image), (attackX, attackY))
+            attackX += 50
+            pygame.display.update()
 
 
 # half the size of a player image
@@ -202,14 +216,8 @@ while True:
     if keys[pygame.K_0]: player2.attack()
 
 
-    # bounding
+    # horizontal bounding
     for player in player_list:
-        if player.y < 380:
-            player.y += player.gravity
-            player.gravity += 1
-        if player.y >= 380:
-            player.y = 380
-            player.gravity = 1
         if player.x > 640:
             player.x = 640
         if player.x < -10:
