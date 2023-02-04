@@ -111,16 +111,17 @@ class Player(pygame.sprite.Sprite):
 
         if self.gravity <= 0:
             self.jumping = False
+
+        if player.attacking:
+            attackX, attackY = self.x +50, self.y 
+            screen.blit(image_resizer(self.attack_image), (attackX, attackY))
+            player.attacking = False
+
     
    
     def attack(self):
-        attackX, attackY = self.x +50, self.y 
         if not player.attacking:
             player.attacking = True
-        while player.attacking and attackX > 0 and attackX < 600:
-            screen.blit(image_resizer(self.attack_image), (attackX, attackY))
-            attackX += 50
-            pygame.display.update()
 
 
 # half the size of a player image
@@ -221,9 +222,9 @@ while True:
 
     # horizontal bounding
     for player in player_list:
-        # if player.y < 380:
-        #     player.y += player.gravity
-        #     player.gravity += 1
+        if player.y < 380:
+            player.y += player.gravity - 9
+            player.gravity += 1
         if player.y >= 380:
             player.y = 380
             player.gravity = 1
