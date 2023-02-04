@@ -38,7 +38,7 @@ def load_image(name, colorkey=None):
     return image, image.get_rect()
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, image, attack, x, y, alive=True, velocity=10, health=100, jumping=False, attacking=False, gravity=-1):
+    def __init__(self, image, attack, x, y, alive=True, velocity=0, health=100, jumping=False, attacking=False, gravity=10):
         pygame.sprite.Sprite.__init__(self)
         self.image, self.rect = load_image(image, -1)
         self.attack_image, self.attack_rect = load_image(attack_image, -1)
@@ -96,19 +96,22 @@ class Player(pygame.sprite.Sprite):
     def surface(self):
         return self.rect()
 
-    def jump(self): #fixing this, crashes game
-        if not player.jumping:
-            player.jumping = True
-        while player.jumping:
-            if player.y < 380:
-                player.y += player.gravity
-                player.gravity += 1
-            if player.y >= 380:
-                player.y = 380
-                player.gravity = 1
-            if player.y == 640:
-                player.jumping = False
-        pygame.display.update()
+    def jump(self): 
+        if not self.jumping:
+            self.jumping = True
+            self.velocity = -10
+            self.gravity = 10
+
+
+    def update(self):
+        if self.jumping:
+            self.y += self.velocity
+            self.velocity += 1
+            self.gravity -= 1
+
+        if self.gravity <= 0:
+            self.jumping = False
+    
    
     def attack(self):
         attackX, attackY = self.x +50, self.y 
@@ -218,6 +221,12 @@ while True:
 
     # horizontal bounding
     for player in player_list:
+        # if player.y < 380:
+        #     player.y += player.gravity
+        #     player.gravity += 1
+        if player.y >= 380:
+            player.y = 380
+            player.gravity = 1
         if player.x > 640:
             player.x = 640
         if player.x < -10:
@@ -225,7 +234,7 @@ while True:
 
     screen.blit(game_background, (0,0))
     draw_text_centered('Fight!', 20)
-    player1.draw()
-    player2.draw()
+    player1.draw(); player1.update()
+    player2.draw(); player2.update()
     pygame.display.update()
     clock.tick(fps)
