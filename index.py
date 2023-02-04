@@ -113,15 +113,17 @@ class Player(pygame.sprite.Sprite):
             self.jumping = False
 
         if player.attacking:
-            attackX, attackY = self.x +50, self.y 
-            screen.blit(image_resizer(self.attack_image), (attackX, attackY))
-            player.attacking = False
-
-    
-   
+            # screen.blit(image_resizer(self.attack_image), (0,0))
+            return
+ 
     def attack(self):
         if not player.attacking:
             player.attacking = True
+
+
+class Attack(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
 
 
 # half the size of a player image
