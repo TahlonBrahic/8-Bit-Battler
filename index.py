@@ -249,6 +249,12 @@ while True:
         if player.x < -10:
             player.x = -10
 
+    # player and bullet collision
+    for sprite in sprite_group:
+        collisions = pygame.sprite.spritecollide(sprite, sprite_group, False)
+        if len(collisions) > 1:
+            pass
+
     screen.blit(game_background, (0,0))
     draw_text_centered('Fight!', 20)
     player1.draw() 
