@@ -38,7 +38,7 @@ def load_image(name, colorkey=None):
     return image, image.get_rect()
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, image, attack, x, y, alive=True, velocity=0, health=100, jumping=False, attacking=False, gravity=10):
+    def __init__(self, image, attack_image, x, y, alive=True, velocity=0, health=100, jumping=False, attacking=False, gravity=10):
         pygame.sprite.Sprite.__init__(self)
         self.image, self.rect = load_image(image, -1)
         self.attack_image, self.attack_rect = load_image(attack_image, -1)
@@ -102,6 +102,12 @@ class Player(pygame.sprite.Sprite):
             self.velocity = -10
             self.gravity = 10
 
+    def attack(self):
+        if not player.attacking:
+            player.attacking = True
+        if player.attacking:
+            new_attack = Attack(self.attack_image, self)
+            sprite_group.add(new_attack)
 
     def update(self):
         if self.jumping:
@@ -112,18 +118,23 @@ class Player(pygame.sprite.Sprite):
         if self.gravity <= 0:
             self.jumping = False
 
-        if player.attacking:
-            # screen.blit(image_resizer(self.attack_image), (0,0))
-            return
- 
-    def attack(self):
-        if not player.attacking:
-            player.attacking = True
 
 
 class Attack(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, image, player):
         pygame.sprite.Sprite.__init__(self)
+        self.image = image
+        self.player = player
+        self.x = 400
+        self.y = 200
+
+    def update(self):
+        screen.blit(image_resizer(self.image), (self.x, self.y))
+        self.x += 10
+        if self.x > 600 or self.x < 0:
+            player.attacking = False
+            sprite_group.remove(self)
+
 
 
 # half the size of a player image
@@ -145,6 +156,8 @@ player1 = Player(player1_image, attack_image, 500, 380)
 player2 = Player(player2_image, attack_image, 200, 380)
 
 player_list = [player1, player2]
+sprite_group = pygame.sprite.Group()
+sprite_group.add([player1,player2])
 
 # draw text to screen
 def draw_text_centered(text, y, font=font, color=(0,0,0), surface=screen):
@@ -212,15 +225,16 @@ while True:
             if event.key == pygame.K_RCTRL:
                 if not player2.jumping:
                     player2.jump()
+            if event.key == pygame.K_f:
+                player1.attack()
+            if event.key == pygame.K_RSHIFT:
+                player2.attack()
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]: player1.x -= 10
-    if keys[pygame.K_RIGHT]: player1.x += 10      
-    if keys[pygame.K_f]: player1.attack()   
+    if keys[pygame.K_RIGHT]: player1.x += 10        
     if keys[pygame.K_a]: player2.x -= 10
     if keys[pygame.K_d]: player2.x += 10
-    if keys[pygame.K_0]: player2.attack()
-
 
     # horizontal bounding
     for player in player_list:
@@ -237,7 +251,8 @@ while True:
 
     screen.blit(game_background, (0,0))
     draw_text_centered('Fight!', 20)
-    player1.draw(); player1.update()
-    player2.draw(); player2.update()
+    player1.draw() 
+    player2.draw() 
+    sprite_group.update()
     pygame.display.update()
     clock.tick(fps)
