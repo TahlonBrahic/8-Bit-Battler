@@ -125,8 +125,9 @@ class Attack(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = image
         self.player = player
-        self.x = 400
-        self.y = 200
+        self.x = player.x
+        self.y = player.y
+        self.rect = self.image.get_rect()
 
     def update(self):
         screen.blit(image_resizer(self.image), (self.x, self.y))
