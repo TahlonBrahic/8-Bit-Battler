@@ -82,6 +82,7 @@ class Player(pygame.sprite.Sprite):
 
         if self.x == 300:
             self.flip_image()
+            self.direction = 'left' if self.direction == 'right' else 'right'
 
 class Attack(pygame.sprite.Sprite):
     def __init__(self, image, player):
@@ -92,9 +93,16 @@ class Attack(pygame.sprite.Sprite):
         self.y = player.y
         self.rect = self.image.get_rect()
 
+    def flip_image(self):
+        self.image = pygame.transform.flip(self.image, True, False)
+
     def update(self):
-        screen.blit(image_resizer(self.image), (self.x, self.y))
-        self.x += 10
+        if player.direction == 'left':
+            screen.blit(image_resizer(self.image), (self.x, self.y))
+            self.x += 10
+        if player.direction =='right':
+            screen.blit(self.flip_image(image_resizer(self.image)), (self.x, self.y))
+            self.x -= 10
         if self.x > 600 or self.x < 0:
             player.attacking = False
             sprite_group.remove(self)
