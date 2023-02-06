@@ -117,6 +117,9 @@ class Player(pygame.sprite.Sprite):
 
         if self.gravity <= 0:
             self.jumping = False
+        
+        if self.x >= 300:
+            self.image = pygame.transform.flip(self.image, True, False)
 
 
 
