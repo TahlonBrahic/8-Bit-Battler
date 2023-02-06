@@ -38,7 +38,7 @@ def load_image(name, colorkey=None):
     return image, image.get_rect()
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, image, attack_image, x, y, alive=True, velocity=0, health=100, jumping=False, attacking=False, gravity=10):
+    def __init__(self, image, attack_image, x, y, direction, alive=True, velocity=0, health=100, jumping=False, attacking=False, gravity=10):
         pygame.sprite.Sprite.__init__(self)
         self.image, self.rect = load_image(image, -1)
         self.attack_image, self.attack_rect = load_image(attack_image, -1)
@@ -50,6 +50,7 @@ class Player(pygame.sprite.Sprite):
         self.health = health
         self.jumping = jumping
         self.attacking = attacking
+        self.direction = direction
 
     def get_image(self):
         return self.image
@@ -121,8 +122,6 @@ class Player(pygame.sprite.Sprite):
         if self.x >= 300:
             self.image = pygame.transform.flip(self.image, True, False)
 
-
-
 class Attack(pygame.sprite.Sprite):
     def __init__(self, image, player):
         pygame.sprite.Sprite.__init__(self)
@@ -156,8 +155,8 @@ player1_image= 'X:\Files\Programming\Projects\PyPals\\resources\\test artwork\pl
 
 
 # player's
-player1 = Player(player1_image, attack_image, 500, 380)
-player2 = Player(player2_image, attack_image, 200, 380)
+player1 = Player(player1_image, attack_image, 500, 380, 'left')
+player2 = Player(player2_image, attack_image, 200, 380, 'right')
 
 player_list = [player1, player2]
 sprite_group = pygame.sprite.Group()
