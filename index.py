@@ -52,50 +52,11 @@ class Player(pygame.sprite.Sprite):
         self.attacking = attacking
         self.direction = direction
 
-    def get_image(self):
-        return self.image
-    
-    def get_x(self):
-        return self.x
-
-    def get_y(self):
-        return self.y
-
-    def get_attack(self):
-        return self.attack
-        
-    def get_alive(self):
-        return self.alive
-    
-    def get_velocity(self):
-        return self.get_velocity
-
-    def get_gravity(self):
-        return self.gravity
-
-    def set_image(self, image_to_set):
-        self.image = image_to_set
-
-    def set_x(self, x_to_set):
-        self.x = x_to_set
-
-    def set_y(self, y_to_set):
-        self.y = y_to_set
-
-    def set_attack(self, attack_to_set):
-        self.attack = attack_to_set
-
-    def set_alive(self, state):
-        self.alive = state
-
-    def set_health(self, health_to_set):
-        self.health = health_to_set
-
     def draw(self):
         return screen.blit(image_resizer(self.image), (self.x, self.y))
 
-    def surface(self):
-        return self.rect()
+    def flip_image(self):
+        self.image = pygame.transform.flip(self.image, True, False)
 
     def jump(self): 
         if not self.jumping:
@@ -118,9 +79,9 @@ class Player(pygame.sprite.Sprite):
 
         if self.gravity <= 0:
             self.jumping = False
-        
-        if self.x >= 300:
-            self.image = pygame.transform.flip(self.image, True, False)
+
+        if self.x == 300:
+            self.flip_image()
 
 class Attack(pygame.sprite.Sprite):
     def __init__(self, image, player):
