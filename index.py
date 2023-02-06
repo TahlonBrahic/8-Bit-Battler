@@ -155,8 +155,8 @@ player1_image= 'X:\Files\Programming\Projects\PyPals\\resources\\test artwork\pl
 
 
 # player's
-player1 = Player(player1_image, attack_image, 500, 380, 'left')
-player2 = Player(player2_image, attack_image, 200, 380, 'right')
+player1 = Player(player1_image, attack_image, 500, 380, 'right')
+player2 = Player(player2_image, attack_image, 200, 380, 'left')
 
 player_list = [player1, player2]
 sprite_group = pygame.sprite.Group()
