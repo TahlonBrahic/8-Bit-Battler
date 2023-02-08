@@ -139,6 +139,13 @@ def draw_text_centered(text, y, font=font, color=(0,0,0), surface=screen):
     textrect.y += y
     surface.blit(textobj, textrect)
 
+def draw_player_health(x, player, font=font, color=(0,0,0), surface=screen):
+    textobj = font.render(str(player.health), 1, color)
+    textrect = textobj.get_rect()
+    textrect.x += x
+    textrect.y = 20
+    surface.blit(textobj, textrect)
+
 
 # pause menu
 def pause_game():   
@@ -224,13 +231,15 @@ while True:
     # player and bullet collision
     for sprite in sprite_group:
         collisions = pygame.sprite.spritecollide(sprite, sprite_group, False)
-        if len(collisions) > 1:
-            pass
+        if len(collisions) > 2:
+            player.health -= 1
 
     screen.blit(game_background, (0,0))
     draw_text_centered('Fight!', 20)
     player1.draw() 
     player2.draw() 
+    draw_player_health(200, player1)
+    draw_player_health(550, player2)
     sprite_group.update()
     pygame.display.update()
     clock.tick(fps)
