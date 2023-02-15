@@ -15,7 +15,7 @@ pygame.display.set_icon(icon)
 
 
 font = pygame.font.Font('X:\\Files\\Programming\\Projects\\PyPals\\resources\\font\\Pixeltype.ttf', 50)
-game_background = pygame.image.load('background.png')
+game_background = pygame.image.load('resources/background/background.png')
 game_background = pygame.transform.scale(game_background, (800, 600))
 
 clock = pygame.time.Clock()
@@ -32,7 +32,7 @@ def load_image(name, colorkey=None):
         raise SystemExit
     image = image.convert_alpha()
     if colorkey is not None:
-        if colorkey is -1:
+        if colorkey == -1:
             colorkey = image.get_at((0,0))
         image.set_colorkey(colorkey, RLEACCEL)
     return image, image.get_rect()
@@ -121,15 +121,13 @@ attack_image = 'X:\Files\Programming\Projects\PyPals\\resources\\test artwork\\a
 player2_image = 'X:\Files\Programming\Projects\PyPals\\resources\\test artwork\player1.png'
 player1_image= 'X:\Files\Programming\Projects\PyPals\\resources\\test artwork\player2.png'
 
-
-
 # player's
 player1 = Player(player1_image, attack_image, 500, 380, 'right')
 player2 = Player(player2_image, attack_image, 200, 380, 'left')
 
 player_list = [player1, player2]
 sprite_group = pygame.sprite.Group()
-sprite_group.add([player1,player2])
+sprite_group.add(player_list)
 
 # draw text to screen
 def draw_text_centered(text, y, font=font, color=(0,0,0), surface=screen):
