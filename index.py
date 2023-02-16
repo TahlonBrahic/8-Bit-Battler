@@ -55,8 +55,12 @@ class Player(pygame.sprite.Sprite):
     def draw(self):
         return screen.blit(image_resizer(self.image), (self.x, self.y))
 
-    def flip_image(self):
+    def turn(self):
         self.image = pygame.transform.flip(self.image, True, False)
+
+    # def move(self, input_direction):
+    #     if input_direction:
+
 
     def jump(self): 
         if not self.jumping:
@@ -65,9 +69,9 @@ class Player(pygame.sprite.Sprite):
             self.gravity = 10
 
     def attack(self):
-        if not player.attacking:
-            player.attacking = True
-        if player.attacking:
+        if not self.attacking:
+            self.attacking = True
+        if self.attacking:
             new_attack = Attack(self.attack_image, self)
             sprite_group.add(new_attack)
 
@@ -79,10 +83,10 @@ class Player(pygame.sprite.Sprite):
 
         if self.gravity <= 0:
             self.jumping = False
+        
+        if not self.direction:
+            self.turn()
 
-        if self.x == 300:
-            self.flip_image()
-            self.direction = 'left' if self.direction == 'right' else 'right'
 
 class Attack(pygame.sprite.Sprite):
     def __init__(self, image, player):
@@ -104,7 +108,7 @@ class Attack(pygame.sprite.Sprite):
             screen.blit(self.flip_image(image_resizer(self.image)), (self.x, self.y))
             self.x -= 10
         if self.x > 600 or self.x < 0:
-            player.attacking = False
+            self.attacking = False
             sprite_group.remove(self)
 
 
@@ -208,10 +212,10 @@ while True:
                 player2.attack()
 
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT]: player1.x -= 10
-    if keys[pygame.K_RIGHT]: player1.x += 10        
-    if keys[pygame.K_a]: player2.x -= 10
-    if keys[pygame.K_d]: player2.x += 10
+    if keys[pygame.K_LEFT]: player1.x -= 10; player1.direction == 'left'
+    if keys[pygame.K_RIGHT]: player1.x += 10; player1.direction == 'right'      
+    if keys[pygame.K_a]: player2.x -= 10; player2.direction == 'left'
+    if keys[pygame.K_d]: player2.x += 10; player2.direction == 'right'
 
     # horizontal bounding
     for player in player_list:
