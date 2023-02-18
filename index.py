@@ -87,6 +87,9 @@ class Player(pygame.sprite.Sprite):
         if not self.direction:
             self.turn()
 
+        if self.health <= 0:
+            self.alive = False
+
 
 class Attack(pygame.sprite.Sprite):
     def __init__(self, image, player):
